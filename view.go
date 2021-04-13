@@ -1,6 +1,8 @@
 package main
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
 // If you don't have to adjust the screen size with the outside size, just return a fixed size.
@@ -13,9 +15,27 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
 	bop := &ebiten.DrawImageOptions{}
-	op := &ebiten.DrawImageOptions{}
 
-	screen.DrawImage(board, bop)
-	op.GeoM.Translate(x, y) //position of graphic on screen
-	screen.DrawImage(rect, op)
+	var test bool = true
+	if test {
+		screen.DrawImage(board, bop)
+
+		for _, piece := range redPlayer.pieces {
+			if piece.isKing {
+				screen.DrawImage(redPlayer.king, piece.renderAt)
+			} else {
+				screen.DrawImage(redPlayer.pawn, piece.renderAt)
+			}
+		}
+
+		for _, piece := range blackPlayer.pieces {
+			if piece.isKing {
+				screen.DrawImage(blackPlayer.king, piece.renderAt)
+			} else {
+				screen.DrawImage(blackPlayer.pawn, piece.renderAt)
+			}
+		}
+	}
+	test = false
+
 }
