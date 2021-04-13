@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	screenWidth  = 340
-	screenHeight = 240
+	screenWidth  = 400
+	screenHeight = 400
 )
 
 var (
@@ -23,6 +23,21 @@ var (
 // Game implements ebiten.Game interface.
 type Game struct {
 	keys []ebiten.Key
+}
+
+func main() {
+	game := &Game{}
+	// Sepcify the window size as you like. Here, a doulbed size is specified.
+	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
+	ebiten.SetWindowTitle("goCheckers")
+
+	rect = ebiten.NewImage(20, 20)
+	rect.Fill(color.RGBA{255, 255, 255, 128})
+
+	// Call ebiten.RunGame to start your game loop.
+	if err := ebiten.RunGame(game); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func moveBlockside(key ebiten.Key, dir int) {
@@ -62,7 +77,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
 	op := &ebiten.DrawImageOptions{}
 
-	//op.GeoM.Translate(x, y) //position of graphic on screen
+	op.GeoM.Translate(x, y) //position of graphic on screen
 
 	screen.DrawImage(rect, op)
 }
@@ -71,19 +86,4 @@ func (g *Game) Draw(screen *ebiten.Image) {
 // If you don't have to adjust the screen size with the outside size, just return a fixed size.
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
-}
-
-func main() {
-	game := &Game{}
-	// Sepcify the window size as you like. Here, a doulbed size is specified.
-	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
-	ebiten.SetWindowTitle("goCheckers")
-
-	rect = ebiten.NewImage(20, 20)
-	rect.Fill(color.RGBA{255, 255, 255, 128})
-
-	// Call ebiten.RunGame to start your game loop.
-	if err := ebiten.RunGame(game); err != nil {
-		log.Fatal(err)
-	}
 }
