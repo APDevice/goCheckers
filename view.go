@@ -14,7 +14,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
-	screen.DrawImage(board, &boardPosition)
+	screen.DrawImage(board, &boardRender)
 
 	for _, piece := range redPlayer.pieces {
 		if piece.isKing {

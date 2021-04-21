@@ -1,7 +1,5 @@
 package main
 
-const dist float64 = 100
-
 // func moveBlockside(key ebiten.Key, dir float64) {
 
 // 	if inpututil.IsKeyJustPressed(key) {

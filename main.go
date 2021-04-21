@@ -29,13 +29,14 @@ type player struct {
 
 var (
 	board                  *ebiten.Image
-	boardPosition          = ebiten.DrawImageOptions{}
+	boardRender            = ebiten.DrawImageOptions{}
+	boardGrid              [][]*piece
 	redPlayer, blackPlayer player
 )
 
 // Game implements ebiten.Game interface.
 type Game struct {
-	keys []ebiten.Key
+	// keys []ebiten.Key
 }
 
 func missingAsset(err error) {
