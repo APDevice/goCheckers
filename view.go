@@ -14,28 +14,22 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
-	bop := &ebiten.DrawImageOptions{}
+	screen.DrawImage(board, &boardPosition)
 
-	var test bool = true
-	if test {
-		screen.DrawImage(board, bop)
-
-		for _, piece := range redPlayer.pieces {
-			if piece.isKing {
-				screen.DrawImage(redPlayer.king, piece.renderAt)
-			} else {
-				screen.DrawImage(redPlayer.pawn, piece.renderAt)
-			}
-		}
-
-		for _, piece := range blackPlayer.pieces {
-			if piece.isKing {
-				screen.DrawImage(blackPlayer.king, piece.renderAt)
-			} else {
-				screen.DrawImage(blackPlayer.pawn, piece.renderAt)
-			}
+	for _, piece := range redPlayer.pieces {
+		if piece.isKing {
+			screen.DrawImage(redPlayer.king, piece.renderAt)
+		} else {
+			screen.DrawImage(redPlayer.pawn, piece.renderAt)
 		}
 	}
-	test = false
+
+	for _, piece := range blackPlayer.pieces {
+		if piece.isKing {
+			screen.DrawImage(blackPlayer.king, piece.renderAt)
+		} else {
+			screen.DrawImage(blackPlayer.pawn, piece.renderAt)
+		}
+	}
 
 }

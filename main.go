@@ -29,8 +29,8 @@ type player struct {
 
 var (
 	board                  *ebiten.Image
+	boardPosition          = ebiten.DrawImageOptions{}
 	redPlayer, blackPlayer player
-	move                   bool
 )
 
 // Game implements ebiten.Game interface.
@@ -47,7 +47,7 @@ func missingAsset(err error) {
 func init() {
 	//set initial layout of pieces
 	resetPieces()
-
+	ebiten.SetScreenClearedEveryFrame(false)
 	//import graphical elements
 	var err error
 	assets := map[string]**ebiten.Image{
