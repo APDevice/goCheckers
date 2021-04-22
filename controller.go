@@ -11,6 +11,9 @@ var (
 	selected *piece
 )
 
+//TODO add movement restrictions
+//TODO capture enemy pieces
+//move logic to model
 func mouseInput() {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		mouseX, mouseY := ebiten.CursorPosition()
