@@ -27,10 +27,14 @@ type player struct {
 	pieces [12]*piece
 }
 
+type _board struct {
+	image  *ebiten.Image
+	Render ebiten.DrawImageOptions
+	Grid   [8][8]*piece
+}
+
 var (
-	board                  *ebiten.Image
-	boardRender            = ebiten.DrawImageOptions{}
-	boardGrid              [][]*piece
+	board                  _board
 	redPlayer, blackPlayer player
 )
 
@@ -50,9 +54,10 @@ func init() {
 	resetPieces()
 	ebiten.SetScreenClearedEveryFrame(false)
 	//import graphical elements
+	//board.Render = ebiten.DrawImageOptions{}
 	var err error
 	assets := map[string]**ebiten.Image{
-		"./assets/board.png": &board,
+		"./assets/board.png": &board.image,
 		"./assets/RKing.png": &redPlayer.king,
 		"./assets/RPawn.png": &redPlayer.pawn,
 		"./assets/BKing.png": &blackPlayer.king,
@@ -97,11 +102,13 @@ func resetPieces() {
 		for x, char := range row {
 			switch char {
 			case 'o':
+				//initilize red piece if necesary
 				if redPlayer.pieces[redIdx] == nil {
 					redPlayer.pieces[redIdx] = &piece{
 						x:        0,
 						y:        0,
 						renderAt: &ebiten.DrawImageOptions{},
+						isKing:   false,
 					}
 				}
 				redPiece = redPlayer.pieces[redIdx]
@@ -111,12 +118,15 @@ func resetPieces() {
 				redPiece.y = y
 				redPiece.renderAt.GeoM.Translate(float64(x*squareSize), float64(y*squareSize))
 				redPiece.isKing = false
+				board.Grid[x][y] = redPiece
 			case 'x':
+				//initilize black piece if necesary
 				if blackPlayer.pieces[blackIdx] == nil {
 					blackPlayer.pieces[blackIdx] = &piece{
 						x:        0,
 						y:        0,
 						renderAt: &ebiten.DrawImageOptions{},
+						isKing:   false,
 					}
 				}
 				blackPiece = blackPlayer.pieces[blackIdx]
@@ -126,6 +136,9 @@ func resetPieces() {
 				blackPiece.y = y
 				blackPiece.renderAt.GeoM.Translate(float64(x*squareSize), float64(y*squareSize))
 				blackPiece.isKing = false
+				board.Grid[x][y] = blackPiece
+			default:
+				board.Grid[x][y] = nil
 			}
 		}
 	}
