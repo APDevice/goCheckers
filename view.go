@@ -7,7 +7,7 @@ import (
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
 // If you don't have to adjust the screen size with the outside size, just return a fixed size.
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
+	return SCREEN_WIDTH, SCREEN_HEIGHT
 }
 
 // Draw draws the game screen.
@@ -18,17 +18,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	for _, piece := range redPlayer.pieces {
 		if piece.isKing {
-			screen.DrawImage(redPlayer.king, piece.renderAt)
+			screen.DrawImage(redPlayer.king, piece.renderLoc())
 		} else {
-			screen.DrawImage(redPlayer.pawn, piece.renderAt)
+			screen.DrawImage(redPlayer.pawn, piece.renderLoc())
 		}
 	}
 
 	for _, piece := range blackPlayer.pieces {
 		if piece.isKing {
-			screen.DrawImage(blackPlayer.king, piece.renderAt)
+			screen.DrawImage(blackPlayer.king, piece.renderLoc())
 		} else {
-			screen.DrawImage(blackPlayer.pawn, piece.renderAt)
+			screen.DrawImage(blackPlayer.pawn, piece.renderLoc())
 		}
 	}
 

@@ -14,10 +14,12 @@ var (
 //TODO add movement restrictions
 //TODO capture enemy pieces
 //move logic to model
+
+// mouseInput checks location of mouse cursor
 func mouseInput() {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		mouseX, mouseY := ebiten.CursorPosition()
-		x, y := mouseX/(screenWidth/8), mouseY/(screenHeight/8)
+		x, y := mouseX/(SCREEN_WIDTH/8), mouseY/(SCREEN_HEIGHT/8)
 		if selected == nil {
 			selected = board.Grid[x][y]
 			fmt.Println("selected")
@@ -34,24 +36,17 @@ func mouseInput() {
 			selected.y = y
 			board.Grid[x][y] = selected
 			board.Grid[oldX][oldY] = nil
-			fmt.Println(float64(x*squareSize), float64(y*squareSize))
-			selected.renderAt.GeoM.Translate(float64((x-oldX)*squareSize), float64(y-oldY)*squareSize)
+			fmt.Println(float64(x*SQUARESIZE), float64(y*SQUARESIZE))
+			selected.renderAt.GeoM.Translate(float64((x-oldX)*SQUARESIZE), float64(y-oldY)*SQUARESIZE)
 			selected = nil
 			fmt.Println("moved")
-		}
-	}
 
+		}
+
+	}
 }
 
 func (g *Game) Update() error {
-	// Write your game's logical update.
-	//g.keys = inpututil.PressedKeys()
-
-	// moveBlockside(ebiten.KeyD, 1)
-	// moveBlockside(ebiten.KeyA, -1)
-
-	// moveBlockupdown(ebiten.KeyW, -1)
-	// moveBlockupdown(ebiten.KeyS, 1)
 	mouseInput()
 	return nil
 }
