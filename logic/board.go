@@ -1,8 +1,8 @@
-package main
+/** board.go contains logic for the rendering and initilization of the board struct */
+
+package logic
 
 import (
-	"log"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -86,55 +86,4 @@ func (b Board) Reset() {
 			}
 		}
 	}
-}
-
-// player interface is prototype for player
-type player struct {
-	pawn      *ebiten.Image
-	king      *ebiten.Image
-	pieces    [12]*piece
-	remaining int
-}
-
-type human struct {
-	player
-}
-
-type ai struct {
-	player
-}
-
-// throws error if asset is missing
-func missingAsset(err error) {
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
-
-// loads the initial assets for each player
-func (p player) load(king, pawn string) {
-	var err error
-	p.king, _, err = ebitenutil.NewImageFromFile(king)
-	missingAsset(err)
-	p.pawn, _, err = ebitenutil.NewImageFromFile(pawn)
-	missingAsset(err)
-}
-
-// piece stores the position of each piece on the board and whether it is a king
-type piece struct {
-	x, y      int
-	renderAt  ebiten.DrawImageOptions
-	direction int // stores 1 if pieces move down, else -1
-	isKing    bool
-}
-
-func (p piece) renderLoc() *ebiten.DrawImageOptions {
-	return &p.renderAt
-}
-
-// move updates the position of the piece if such a move is possible, otherwise returns false
-func (p piece) move(newX, newY int) bool {
-	//TODO write checker to see if move is possible and if a piece will be captured in the process
-
-	return true
 }

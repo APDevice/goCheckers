@@ -1,3 +1,11 @@
+/*
+	Project: goCheckers
+	Author: Dylan Luttrell
+	License: GNU GPLv3
+	Description: An immplementation of the classic game of checkers in the Go langauges, using the ebiten game engine.
+				Details for ebiten can be found at ebiten.org.
+*/
+
 package main
 
 import (
