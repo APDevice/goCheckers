@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	SCREEN_WIDTH  = 800
-	SCREEN_HEIGHT = 800
-	SQUARESIZE    = 100
+	// SCREEN_WIDTH  = 800
+	// SCREEN_HEIGHT = 800
+	// SQUARESIZE    = 100
 	// assets
 	BOARD      = "./assets/board.png"
 	RED_KING   = "./assets/RKing.png"
