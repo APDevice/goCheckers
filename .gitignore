@@ -1,5 +1,8 @@
 #user notes
 spec.txt
 
+#test files
+*_test.go
+
 #system files
 .DS_Store

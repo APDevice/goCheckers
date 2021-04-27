@@ -9,10 +9,6 @@ import (
 )
 
 const (
-	// SCREEN_WIDTH  = 800
-	// SCREEN_HEIGHT = 800
-	// SQUARESIZE    = 100
-	// assets
 	BOARD      = "./assets/board.png"
 	RED_KING   = "./assets/RKing.png"
 	RED_PAWN   = "./assets/RPawn.png"
@@ -21,18 +17,17 @@ const (
 )
 
 var (
-	board       Board
-	redPlayer   ai
-	blackPlayer human
+	SQUARESIZE = 100
+	Board      board
+	Player1    = player_init(RED_KING, RED_PAWN, -1, false)
+	Player2    = player_init(BLACK_KING, BLACK_PAWN, 1, true)
 )
 
 func init() {
 	//set initial layout of pieces
-	board.Reset()
+	Board.Reset()
 	ebiten.SetScreenClearedEveryFrame(false)
 
-	board.Load(BOARD)
-	redPlayer.load(RED_KING, RED_PAWN)
-	blackPlayer.load(BLACK_KING, BLACK_PAWN)
+	Board.Load(BOARD)
 
 }

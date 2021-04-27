@@ -3,29 +3,44 @@
 package logic
 
 import (
+	"errors"
+	_ "image/png"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 // Stores graphics and positional data for board
-type Board struct {
-	image  *ebiten.Image
+type board struct {
+	Image  *ebiten.Image
 	Render ebiten.DrawImageOptions
-	Grid   [8][8]*piece
+	Grid   [8][8]*Piece
+}
+
+func Board_init() *board {
+	return &board{}
+}
+
+func (b board) GetImage() *ebiten.Image {
+	return b.Image
 }
 
 // loads initial assets
-func (b Board) Load(img string) {
-	var err error
-	b.image, _, err = ebitenutil.NewImageFromFile(img)
+func (b *board) Load(img string) (err error) {
+	b.Image, _, err = ebitenutil.NewImageFromFile(img)
+	if b.Image == nil {
+		return errors.New("Image nil as start")
+	}
+	b.Render = ebiten.DrawImageOptions{}
 	missingAsset(err)
+	return
 }
 
 // Reset the pieces on the board to their inital count and position
-func (b Board) Reset() {
+func (b board) Reset() {
 	// reset number of pieces remaining for each player
-	redPlayer.remaining = 12
-	blackPlayer.remaining = 12
+	Player1.remaining = 12
+	Player2.remaining = 12
 
 	initlayout := [8]string{
 		"x-x-x-x-",
@@ -39,46 +54,43 @@ func (b Board) Reset() {
 	}
 
 	var redIdx, blackIdx int
-	var redPiece, blackPiece *piece
+	var redPiece, blackPiece *Piece
 	for y, row := range initlayout {
 		for x, char := range row {
 			switch char {
 			case 'o':
 				//initilize red piece if necesary
-				if redPlayer.pieces[redIdx] == nil {
-					redPlayer.pieces[redIdx] = &piece{
-						x:         0,
-						y:         0,
-						renderAt:  ebiten.DrawImageOptions{},
+				if Player1.pieces[redIdx] == nil {
+					Player1.pieces[redIdx] = &Piece{
+						x:         x,
+						y:         y,
+						owner:     &Player1,
 						direction: -1,
 						isKing:    false,
 					}
 				}
-				redPiece = redPlayer.pieces[redIdx]
+				redPiece = Player1.pieces[redIdx]
 				redIdx++
 
 				redPiece.x = x
 				redPiece.y = y
-				redPiece.renderAt.GeoM.Translate(float64(x*SQUARESIZE), float64(y*SQUARESIZE))
 				redPiece.isKing = false
 				b.Grid[x][y] = redPiece
 			case 'x':
 				//initilize black piece if necesary
-				if blackPlayer.pieces[blackIdx] == nil {
-					blackPlayer.pieces[blackIdx] = &piece{
-						x:         0,
-						y:         0,
-						renderAt:  ebiten.DrawImageOptions{},
+				if Player2.pieces[blackIdx] == nil {
+					Player2.pieces[blackIdx] = &Piece{
+						x:         x,
+						y:         y,
 						direction: 1,
 						isKing:    false,
 					}
 				}
-				blackPiece = blackPlayer.pieces[blackIdx]
+				blackPiece = Player2.pieces[blackIdx]
 				blackIdx++
 
 				blackPiece.x = x
 				blackPiece.y = y
-				blackPiece.renderAt.GeoM.Translate(float64(x*SQUARESIZE), float64(y*SQUARESIZE))
 				blackPiece.isKing = false
 				b.Grid[x][y] = blackPiece
 			default:
@@ -86,4 +98,17 @@ func (b Board) Reset() {
 			}
 		}
 	}
+}
+
+func (b board) update(piece *Piece, x, y int) {
+	b.Grid[x][y] = piece
+}
+
+func (b board) GetPiece(x, y int) *Piece {
+	return b.Grid[x][y]
+}
+
+// emptySpace returns whether the space is currently occupied
+func (b board) emptySpace(x, y int) bool {
+	return b.Grid[x][y] == nil
 }

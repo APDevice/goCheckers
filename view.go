@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/APDevice/goCheckers/logic"
 	"github.com/hajimehoshi/ebiten/v2"
-	"https://github.com/APDevice/goCheckers/tree/main/logic"
 )
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
@@ -15,22 +15,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
-	screen.DrawImage(logic.board.image, &logic.board.Render)
+	screen.DrawImage(logic.Board.Image, &logic.Board.Render)
 
-	for _, piece := range logic.redPlayer.pieces {
-		if piece.isKing {
-			screen.DrawImage(logic.redPlayer.king, piece.renderLoc())
-		} else {
-			screen.DrawImage(logic.redPlayer.pawn, piece.renderLoc())
-		}
-	}
+	logic.Player1.Draw(screen)
 
-	for _, piece := range logic.blackPlayer.pieces {
-		if piece.isKing {
-			screen.DrawImage(logic.blackPlayer.king, piece.renderLoc())
-		} else {
-			screen.DrawImage(logic.blackPlayer.pawn, piece.renderLoc())
-		}
-	}
+	logic.Player2.Draw(screen)
 
 }
