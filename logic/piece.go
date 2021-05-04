@@ -1,4 +1,4 @@
-package logic
+package checkersLogic
 
 import (
 	"errors"
@@ -20,6 +20,10 @@ func (p Piece) Img() *ebiten.Image {
 		return p.owner.Img(true)
 	}
 	return p.owner.Img(false)
+}
+
+func (p Piece) Player() string {
+	return p.owner.name
 }
 
 // renderAt returns a biten.DrawImageOptions object with the proper location

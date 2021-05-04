@@ -1,4 +1,4 @@
-package logic
+package checkersLogic
 
 import (
 	"log"
@@ -10,11 +10,15 @@ import (
 // player interface is prototype for player
 
 type player struct {
-	pawn      *ebiten.Image
-	king      *ebiten.Image
+	name      string
+	assets    interface{}
 	pieces    [12]*Piece
 	remaining int
 	isAI      bool
+}
+
+func (p *player) AddAssets(asset interface{}) {
+	p.assets = asset
 }
 
 // throws error if asset is missing
@@ -26,10 +30,10 @@ func missingAsset(err error) {
 
 func (p player) Img(king bool) *ebiten.Image {
 	if king {
-		return p.king
+		return p.assets.(pieceAssets).king
 	}
 
-	return p.pawn
+	return p.assets.(pieceAssets).pawn
 }
 
 func (p player) Pieces() []*Piece {
@@ -39,14 +43,14 @@ func (p player) Pieces() []*Piece {
 func (p player) Draw(screen *ebiten.Image) {
 	for _, piece := range p.Pieces() {
 		if piece.isKing {
-			screen.DrawImage(p.king, piece.RenderAt())
+			screen.DrawImage(p.assets.(pieceAssets).pawn, piece.RenderAt())
 			return
 		}
-		screen.DrawImage(p.pawn, piece.RenderAt())
+		screen.DrawImage(p.assets.(pieceAssets).king, piece.RenderAt())
 	}
 }
 
-func player_init(king, pawn string, dir int, ai bool) player {
+func player_init(name, king, pawn string, dir int, ai bool) player {
 	var err error
 	kingImg, _, err := ebitenutil.NewImageFromFile(king)
 	missingAsset(err)
@@ -54,8 +58,8 @@ func player_init(king, pawn string, dir int, ai bool) player {
 	missingAsset(err)
 
 	return player{
-		pawn:      pawnImg,
-		king:      kingImg,
+		name:      name,
+		assets:    pieceAssets{kingImg, pawnImg},
 		pieces:    [12]*Piece{},
 		remaining: 12,
 		isAI:      ai,

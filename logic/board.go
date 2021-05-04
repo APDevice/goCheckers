@@ -1,10 +1,12 @@
 /** board.go contains logic for the rendering and initilization of the board struct */
 
-package logic
+package checkersLogic
 
 import (
 	"errors"
 	_ "image/png"
+
+	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -98,6 +100,7 @@ func (b board) Reset() {
 			}
 		}
 	}
+	log.Println(b.Grid)
 }
 
 func (b board) update(piece *Piece, x, y int) {

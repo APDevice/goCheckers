@@ -23,7 +23,9 @@ func mouseInput() {
 		x, y := mouseX/(SCREEN_WIDTH/8), mouseY/(SCREEN_HEIGHT/8)
 		if selected == nil {
 			selected = logic.Board.Grid[x][y]
-			log.Println("selected")
+			if selected != nil {
+				log.Printf("selected %v\n", selected.Player())
+			}
 			return
 		}
 		if selected != nil && selected.SameLoc(x, y) {
