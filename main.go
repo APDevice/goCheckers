@@ -34,7 +34,6 @@ func main() {
 	// configure
 	ebiten.SetScreenClearedEveryFrame(false)
 	ebiten.SetRunnableOnUnfocused(false)
-	ebiten.SetVsyncEnabled(false)
 
 	// Sepcify the window size as you like. Here, a doulbed size is specified.
 	ebiten.SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT)
