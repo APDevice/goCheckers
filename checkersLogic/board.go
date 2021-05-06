@@ -65,14 +65,14 @@ func (b *_board) update(piece *_piece, x, y int) error {
 }
 
 func (b _board) pieceExists(x, y int) bool {
-	if x < 0 || y < 0 || x > 8 || y > 8 {
+	if x < 0 || y < 0 || x >= 8 || y >= 8 {
 		return false
 	}
 	return b.Grid[x][y] != nil
 }
 
 func (b _board) GetPiece(x, y int) (*_piece, error) {
-	if x < 0 || y < 0 || x > 8 || y > 8 {
+	if x < 0 || y < 0 || x >= 8 || y >= 8 {
 		return nil, errors.New("out of bounds")
 	}
 	return b.Grid[x][y], nil

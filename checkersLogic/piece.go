@@ -19,28 +19,31 @@ func (p _piece) Player() int {
 	return p.Owner
 }
 
+// canCapture checks every diagnonal from a piece to see if it can capture
 func (p _piece) canCapture() bool {
-	captureDiag1 := Board.pieceExists(p.X-1, p.Y+p.direction) && !Board.pieceExists(p.X-2, p.Y+(p.direction*2))
-	if captureDiag1 {
-		log.Println(p.X-1, p.Y+p.direction, "can be captured")
-		return true
+	if p.Y+(p.direction*2) >= 0 && p.Y+(p.direction*2) < 8 {
+		captureDiag1 := Board.pieceExists(p.X-1, p.Y+p.direction) && !Board.pieceExists(p.X-2, p.Y+(p.direction*2))
+		if captureDiag1 && p.X-2 >= 0 {
+			log.Println(p.X-1, p.Y+p.direction, "can be captured")
+			return true
+		}
+
+		captureDiag2 := Board.pieceExists(p.X+1, p.Y+p.direction) && !Board.pieceExists(p.X+2, p.Y+(p.direction*2))
+		if captureDiag2 && p.X+2 < 8 {
+			log.Println(p.X+1, p.Y+p.direction, "can be captured")
+			return true
+		}
 	}
 
-	captureDiag2 := Board.pieceExists(p.X+1, p.Y+p.direction) && !Board.pieceExists(p.X+2, p.Y+(p.direction*2))
-	if captureDiag2 {
-		log.Println(p.X+1, p.Y+p.direction, "can be captured")
-		return true
-	}
-
-	if p.IsKing == 1 { //additional checks for king
+	if p.IsKing == 1 && p.Y-(p.direction*2) >= 0 && p.Y-(p.direction*2) < 8 { //additional checks for king
 		captureDiag3 := Board.pieceExists(p.X-1, p.Y-p.direction) && !Board.pieceExists(p.X-2, p.Y-(p.direction*2))
-		if captureDiag3 {
+		if captureDiag3 && p.X-2 >= 0 {
 			log.Println(p.X-1, p.Y-p.direction, "can be captured")
 			return true
 		}
 
 		captureDiag4 := Board.pieceExists(p.X+1, p.Y-p.direction) && !Board.pieceExists(p.X+2, p.Y-(p.direction*2))
-		if captureDiag4 {
+		if captureDiag4 && p.X+2 < 8 {
 			log.Println(p.X+1, p.Y-p.direction, "can be captured")
 			return true
 		}
@@ -86,7 +89,7 @@ func (p _piece) SameLoc(x, y int) bool {
 
 // kingMe checks conditions for king status and sets king marker to true if those conditions are met
 func (p *_piece) _kingMe() {
-	if p.IsKing == 0 && (p.Y == 0 || p.Y == 8) {
+	if p.IsKing == 0 && (p.Y == 0 || p.Y == 7) {
 		p.IsKing = 1
 	}
 }

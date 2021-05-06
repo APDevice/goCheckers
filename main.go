@@ -6,7 +6,7 @@
 				Details for ebiten can be found at ebiten.org.
 */
 
-package main
+package goCheckers
 
 import (
 	_ "image/png"
@@ -31,6 +31,9 @@ type Game struct {
 func main() {
 	//defer profile.Start().Stop()
 	game := &Game{}
+	// configure
+	ebiten.SetScreenClearedEveryFrame(false)
+	ebiten.SetRunnableOnUnfocused(false)
 
 	// Sepcify the window size as you like. Here, a doulbed size is specified.
 	ebiten.SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT)

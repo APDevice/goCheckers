@@ -5,9 +5,13 @@ import (
 	"log"
 )
 
-// Start initizizes game logic
-func Start() error {
-	// TODO Seperate start and reset logic
+/* Start initizizes game logic.
+- if twoPlayer is false, player2 will be controlled by the AI
+
+- difficulty adjusts the AI in one-player game, else does nothing.
+*/
+func Start(twoPlayer bool, difficulty int) error {
+	// initilize rules for game
 	return nil
 }
 
@@ -27,9 +31,13 @@ func Reset() {
 
 /* Reload resets the board with the board layout provided to it. Board layout consists of an slice of eight strings of exactly eight characters each, with the following symbols used to represent different values:
 "x": player 0 pawn,
+
 "X": player 0 king,
+
 "o": player 1 pawn,
+
 "O": player 1 king,
+
 "-": empty space
 */
 func Reload(board []string) error {
@@ -43,9 +51,16 @@ func GetAllPieces() []*_piece {
 	return allPieces
 }
 
-func GetWinner() (int, error) {
+// returns the winning player, if any. Else returns -1
+func GetWinner() int {
+	if players[0].remaining == 0 {
+		return 1
+	}
 
-	return -1, errors.New("game still in progress")
+	if players[1].remaining == 0 {
+		return 0
+	}
+	return -1
 }
 
 func GetPiece(x, y int) (bool, error) {
