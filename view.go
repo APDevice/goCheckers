@@ -1,4 +1,4 @@
-package main
+package goCheckers
 
 import (
 	_ "image/png"
