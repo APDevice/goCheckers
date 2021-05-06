@@ -6,7 +6,7 @@
 				Details for ebiten can be found at ebiten.org.
 */
 
-package goCheckers
+package main
 
 import (
 	_ "image/png"
@@ -34,10 +34,12 @@ func main() {
 	// configure
 	ebiten.SetScreenClearedEveryFrame(false)
 	ebiten.SetRunnableOnUnfocused(false)
+	ebiten.SetVsyncEnabled(false)
 
 	// Sepcify the window size as you like. Here, a doulbed size is specified.
 	ebiten.SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 	ebiten.SetWindowTitle("goCheckers")
+	ebiten.SetMaxTPS(30)
 
 	// Call ebiten.RunGame to start your game loop.
 	if err := ebiten.RunGame(game); err != nil {

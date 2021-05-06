@@ -1,4 +1,4 @@
-package goCheckers
+package main
 
 import (
 	"log"
@@ -10,6 +10,7 @@ import (
 
 var (
 	selected bool
+	update   bool = true
 )
 
 //TODO add movement restrictions
@@ -26,7 +27,7 @@ func mouseInput() {
 		if err != nil {
 			log.Println(err)
 		}
-
+		update = true
 		// 	if selected != nil {
 		// 		//oldX, oldY := selected.CurrentLoc() // store original position for transformation
 		// 		err := selected.Move(x, y)

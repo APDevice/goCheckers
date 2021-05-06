@@ -80,5 +80,8 @@ func (b _board) GetPiece(x, y int) (*_piece, error) {
 
 // emptySpace returns whether the space is currently occupied
 func (b _board) emptySpace(x, y int) bool {
+	if x < 0 || y < 0 || x >= 8 || y >= 8 {
+		return false
+	}
 	return b.Grid[x][y] == nil
 }

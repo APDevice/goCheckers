@@ -1,6 +1,11 @@
 /* initilize board */
 package checkersLogic
 
+type selector struct {
+	piece *_piece
+	x, y  int
+}
+
 var (
 	Board   _board
 	players = [2]_player{
@@ -8,7 +13,7 @@ var (
 		player_init(1, 1, false),
 	}
 	allPieces  = make([]*_piece, 24)
-	selected   *_piece
+	selected   = selector{}
 	playerTurn int
 )
 

@@ -71,19 +71,30 @@ func GetPiece(x, y int) (bool, error) {
 		if p.Owner != playerTurn {
 			return false, errors.New("not this players turn")
 		}
-		if p != selected {
-			selected = p
+		if p != selected.piece {
+			selected.piece = p
+			selected.x = x
+			selected.y = y
 			log.Println("selected")
 			return true, nil
 		}
 		log.Println("unselected")
-		selected = nil
+		selected.piece = nil
 		return false, nil
 	}
-	if selected != nil {
-		selected.Move(x, y)
-		selected = nil
+	if selected.piece != nil {
+		selected.piece.Move(x, y)
+		selected.piece = nil
 	}
 
 	return false, nil
+}
+
+// GetSelector returns the position of the selector if a piece has been selected, else returns (-1, -1)
+func GetSelector() (int, int) {
+	if selected.piece == nil {
+		return -1, -1
+	}
+
+	return selected.x, selected.y
 }

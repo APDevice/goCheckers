@@ -1,6 +1,7 @@
-package goCheckers
+package main
 
 import (
+	"fmt"
 	_ "image/png"
 	"log"
 
@@ -15,6 +16,7 @@ const (
 	RED_PAWN   = "./assets/RPawn.png"
 	BLACK_KING = "./assets/BKing.png"
 	BLACK_PAWN = "./assets/BPawn.png"
+	SELECTOR   = "./assets/selector.png"
 )
 
 // assets
@@ -34,6 +36,8 @@ func missingAsset(err error) {
 func init() {
 	var err error
 	boardImg, _, err = ebitenutil.NewImageFromFile(BOARD)
+	missingAsset(err)
+	selector, _, err = ebitenutil.NewImageFromFile(SELECTOR)
 	missingAsset(err)
 	pieces[0][0], _, err = ebitenutil.NewImageFromFile(RED_PAWN)
 	missingAsset(err)
@@ -55,6 +59,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 // Draw draws the game screen.
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
+	if !update {
+		return
+	}
+	update = false
 	// Write your game's rendering.
 	//log.Println("start render")
 	screen.DrawImage(boardImg, &ebiten.DrawImageOptions{})
@@ -68,5 +76,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		drawAt.GeoM.Translate(float64(p.X)*SQUARESIZE, float64(p.Y)*SQUARESIZE)
 		screen.DrawImage(pieces[p.Owner][p.IsKing], drawAt)
 	}
+	selectorX, selectorY := logic.GetSelector()
 
+	if selectorX != -1 {
+		drawAt := &ebiten.DrawImageOptions{}
+		drawAt.GeoM.Translate(float64(selectorX)*SQUARESIZE, float64(selectorY)*SQUARESIZE)
+		log.Println("selector at:", float64(selectorX)*SQUARESIZE, float64(selectorY)*SQUARESIZE)
+		screen.DrawImage(selector, drawAt)
+	}
+
+	ebiten.SetWindowTitle(fmt.Sprintf("goCheckers %v", (ebiten.CurrentFPS())))
 }

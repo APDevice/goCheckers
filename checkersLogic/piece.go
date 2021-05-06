@@ -21,29 +21,34 @@ func (p _piece) Player() int {
 
 // canCapture checks every diagnonal from a piece to see if it can capture
 func (p _piece) canCapture() bool {
+	var p2 *_piece
 	if p.Y+(p.direction*2) >= 0 && p.Y+(p.direction*2) < 8 {
-		captureDiag1 := Board.pieceExists(p.X-1, p.Y+p.direction) && !Board.pieceExists(p.X-2, p.Y+(p.direction*2))
-		if captureDiag1 && p.X-2 >= 0 {
+		captureDiag1 := Board.emptySpace(p.X-2, p.Y+(p.direction*2))
+		p2, _ = Board.GetPiece(p.X-1, p.Y+p.direction)
+		if captureDiag1 && p2 != nil && p2.Owner == p.Owner {
 			log.Println(p.X-1, p.Y+p.direction, "can be captured")
 			return true
 		}
 
-		captureDiag2 := Board.pieceExists(p.X+1, p.Y+p.direction) && !Board.pieceExists(p.X+2, p.Y+(p.direction*2))
-		if captureDiag2 && p.X+2 < 8 {
+		captureDiag2 := Board.emptySpace(p.X+2, p.Y+(p.direction*2))
+		p2, _ = Board.GetPiece(p.X+1, p.Y+p.direction)
+		if captureDiag2 && p2 != nil && p2.Owner == p.Owner {
 			log.Println(p.X+1, p.Y+p.direction, "can be captured")
 			return true
 		}
 	}
 
 	if p.IsKing == 1 && p.Y-(p.direction*2) >= 0 && p.Y-(p.direction*2) < 8 { //additional checks for king
-		captureDiag3 := Board.pieceExists(p.X-1, p.Y-p.direction) && !Board.pieceExists(p.X-2, p.Y-(p.direction*2))
-		if captureDiag3 && p.X-2 >= 0 {
+		captureDiag3 := Board.emptySpace(p.X-2, p.Y-(p.direction*2))
+		p2, _ = Board.GetPiece(p.X-1, p.Y-p.direction)
+		if captureDiag3 && p2 != nil && p2.Owner == p.Owner {
 			log.Println(p.X-1, p.Y-p.direction, "can be captured")
 			return true
 		}
 
-		captureDiag4 := Board.pieceExists(p.X+1, p.Y-p.direction) && !Board.pieceExists(p.X+2, p.Y-(p.direction*2))
-		if captureDiag4 && p.X+2 < 8 {
+		captureDiag4 := Board.emptySpace(p.X+2, p.Y-(p.direction*2))
+		p2, _ = Board.GetPiece(p.X+1, p.Y-p.direction)
+		if captureDiag4 && p2 != nil && p2.Owner == p.Owner {
 			log.Println(p.X+1, p.Y-p.direction, "can be captured")
 			return true
 		}
@@ -58,7 +63,7 @@ func (p _piece) Capture(x, y int) bool {
 	if err != nil {
 		log.Println(err, x, y)
 	}
-	if capturedPiece == nil {
+	if capturedPiece == nil || capturedPiece.Owner == p.Owner {
 		return false
 	}
 	capturedPiece.Captured = true
@@ -120,6 +125,7 @@ func (p *_piece) Move(newX, newY int) error {
 	}
 
 	playerTurn ^= 1
+	selected.piece = nil
 
 	// oldX, oldY := p.X, p.Y
 	// p.X, p.Y = newX, newY
