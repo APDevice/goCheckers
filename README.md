@@ -6,7 +6,9 @@ This repository contains a work-in-progress recreation of the classic board game
 - Rendering √
 - Input Detection √
 - Interface X
-- Movement X
+- Movement √
+- Capture Logic √
+- Animation X
 - AI X
 
 ## License
