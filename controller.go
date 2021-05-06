@@ -13,10 +13,6 @@ var (
 	update   bool = true
 )
 
-//TODO add movement restrictions
-//TODO capture enemy pieces
-//move logic to model
-
 // mouseInput checks location of mouse cursor
 func mouseInput() {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {

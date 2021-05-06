@@ -107,7 +107,8 @@ func (p *_piece) Move(newX, newY int) error {
 		abs(p.X-newX) != abs(p.Y-newY) { // pieces can only move on exact diagonals
 		return err
 	}
-	// TODO insert logic for valid move checking
+
+	// calculate how many spaces player is requesting to move and run checks accordingly
 	switch abs(p.X - newX) {
 	case 2:
 		c := p.Capture((p.X+newX)/2, (p.Y+newY)/2)
