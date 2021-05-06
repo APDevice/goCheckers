@@ -1,9 +1,50 @@
 package main
 
 import (
-	"github.com/APDevice/goCheckers/logic"
+	_ "image/png"
+	"log"
+
+	logic "github.com/APDevice/goCheckers/checkersLogic"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
+
+const (
+	BOARD      = "./assets/board.png"
+	RED_KING   = "./assets/RKing.png"
+	RED_PAWN   = "./assets/RPawn.png"
+	BLACK_KING = "./assets/BKing.png"
+	BLACK_PAWN = "./assets/BPawn.png"
+)
+
+// assets
+var (
+	boardImg *ebiten.Image
+	selector *ebiten.Image
+	pieces   = [2][2]*ebiten.Image{}
+)
+
+func missingAsset(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+// load assets
+func init() {
+	var err error
+	boardImg, _, err = ebitenutil.NewImageFromFile(BOARD)
+	missingAsset(err)
+	pieces[0][0], _, err = ebitenutil.NewImageFromFile(RED_PAWN)
+	missingAsset(err)
+	pieces[0][1], _, err = ebitenutil.NewImageFromFile(RED_KING)
+	missingAsset(err)
+	pieces[1][0], _, err = ebitenutil.NewImageFromFile(BLACK_PAWN)
+	missingAsset(err)
+	pieces[1][1], _, err = ebitenutil.NewImageFromFile(BLACK_KING)
+	missingAsset(err)
+
+}
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
 // If you don't have to adjust the screen size with the outside size, just return a fixed size.
@@ -15,10 +56,14 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
-	screen.DrawImage(logic.Board.Image, &logic.Board.Render)
-
-	logic.Player1.Draw(screen)
-
-	logic.Player2.Draw(screen)
+	//log.Println("start render")
+	screen.DrawImage(boardImg, &ebiten.DrawImageOptions{})
+	//log.Println("board rendered")
+	for _, p := range logic.GetAllPieces() {
+		//log.Printf("piece %v", i)
+		drawAt := &ebiten.DrawImageOptions{}
+		drawAt.GeoM.Translate(float64(p.X)*SQUARESIZE, float64(p.Y)*SQUARESIZE)
+		screen.DrawImage(pieces[p.Owner][p.IsKing], drawAt)
+	}
 
 }

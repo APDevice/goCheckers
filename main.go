@@ -9,9 +9,10 @@
 package main
 
 import (
+	_ "image/png"
 	"log"
 
-	_ "image/png"
+	//"github.com/pkg/profile"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -28,7 +29,7 @@ type Game struct {
 }
 
 func main() {
-
+	//defer profile.Start().Stop()
 	game := &Game{}
 
 	// Sepcify the window size as you like. Here, a doulbed size is specified.
