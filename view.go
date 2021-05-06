@@ -60,6 +60,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(boardImg, &ebiten.DrawImageOptions{})
 	//log.Println("board rendered")
 	for _, p := range logic.GetAllPieces() {
+		if p.Captured {
+			continue
+		}
 		//log.Printf("piece %v", i)
 		drawAt := &ebiten.DrawImageOptions{}
 		drawAt.GeoM.Translate(float64(p.X)*SQUARESIZE, float64(p.Y)*SQUARESIZE)

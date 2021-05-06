@@ -49,7 +49,7 @@ func GetWinner() (int, error) {
 }
 
 func GetPiece(x, y int) (bool, error) {
-	log.Println(x, y)
+	log.Println("X, Y: ", x, y)
 	p := Board.Grid[x][y]
 
 	if p != nil {
