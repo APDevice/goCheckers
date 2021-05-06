@@ -2,28 +2,28 @@ package checkersLogic
 
 // player interface is prototype for player
 
-type player struct {
-	pieces    [12]*Piece
+type _player struct {
+	pieces    [12]*_piece
 	remaining int
 	isAI      bool
 }
 
 // throws error if asset is missing
 
-func (p player) Pieces() []*Piece {
+func (p _player) Pieces() []*_piece {
 	return p.pieces[:]
 }
 
 // initilizes player class
-func player_init(p, dir int, ai bool) player {
-	temp := player{
-		pieces:    [12]*Piece{},
+func player_init(p, dir int, ai bool) _player {
+	temp := _player{
+		pieces:    [12]*_piece{},
 		remaining: 12,
 		isAI:      ai,
 	}
 
 	for i := 0; i < len(temp.pieces); i++ {
-		temp.pieces[i] = &Piece{Owner: p, direction: dir}
+		temp.pieces[i] = &_piece{Owner: p, direction: dir}
 	}
 
 	return temp

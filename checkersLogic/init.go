@@ -3,12 +3,12 @@ package checkersLogic
 
 var (
 	Board   _board
-	players = [2]player{
+	players = [2]_player{
 		player_init(0, -1, false),
 		player_init(1, 1, false),
 	}
-	allPieces  = make([]*Piece, 24)
-	selected   *Piece
+	allPieces  = make([]*_piece, 24)
+	selected   *_piece
 	playerTurn int
 )
 

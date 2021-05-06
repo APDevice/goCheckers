@@ -9,7 +9,7 @@ import (
 
 // Stores graphics and positional data for _board
 type _board struct {
-	Grid [8][8]*Piece
+	Grid [8][8]*_piece
 }
 
 func Board_init() *_board {
@@ -23,7 +23,7 @@ func (b *_board) Reset(initlayout []string) {
 	players[1].remaining = 12
 
 	var redIdx, blackIdx, allIdx int
-	var redPiece, blackPiece *Piece
+	var redPiece, blackPiece *_piece
 	for y, row := range initlayout {
 		for x, char := range row {
 			switch char {
@@ -59,7 +59,7 @@ func (b *_board) Reset(initlayout []string) {
 	log.Println(b.Grid)
 }
 
-func (b *_board) update(piece *Piece, x, y int) error {
+func (b *_board) update(piece *_piece, x, y int) error {
 	b.Grid[x][y] = piece
 	return nil
 }
@@ -71,7 +71,7 @@ func (b _board) pieceExists(x, y int) bool {
 	return b.Grid[x][y] != nil
 }
 
-func (b _board) GetPiece(x, y int) (*Piece, error) {
+func (b _board) GetPiece(x, y int) (*_piece, error) {
 	if x < 0 || y < 0 || x > 8 || y > 8 {
 		return nil, errors.New("out of bounds")
 	}

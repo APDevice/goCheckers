@@ -38,7 +38,7 @@ func Reload(board []string) error {
 }
 
 // GetAllPieces returns the x and y positions of each peice, its owner, and whether it is a king
-func GetAllPieces() []*Piece {
+func GetAllPieces() []*_piece {
 	// returns list allPieces. If pieces is captured, will be nil
 	return allPieces
 }

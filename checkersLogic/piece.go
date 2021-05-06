@@ -5,8 +5,8 @@ import (
 	"log"
 )
 
-// Piece stores the position of each piece on the board and whether it is a king
-type Piece struct {
+// _piece stores the position of each piece on the board and whether it is a king
+type _piece struct {
 	X, Y      int
 	Owner     int
 	direction int // stores 1 if pieces move down, else -1
@@ -15,11 +15,11 @@ type Piece struct {
 }
 
 // Img returns appropriate image file
-func (p Piece) Player() int {
+func (p _piece) Player() int {
 	return p.Owner
 }
 
-func (p Piece) canCapture() bool {
+func (p _piece) canCapture() bool {
 	captureDiag1 := Board.pieceExists(p.X-1, p.Y+p.direction) && !Board.pieceExists(p.X-2, p.Y+(p.direction*2))
 	if captureDiag1 {
 		log.Println(p.X-1, p.Y+p.direction, "can be captured")
@@ -49,8 +49,7 @@ func (p Piece) canCapture() bool {
 	return false
 }
 
-func (p Piece) Capture(x, y int) bool {
-	log.Println("capture at: ", x, y)
+func (p _piece) Capture(x, y int) bool {
 	capturedPiece, err := Board.GetPiece(x, y)
 
 	if err != nil {
@@ -62,29 +61,38 @@ func (p Piece) Capture(x, y int) bool {
 	capturedPiece.Captured = true
 	Board.update(nil, x, y)
 
+	players[p.Owner^1].remaining--
+
+	if players[p.Owner^1].remaining == 0 {
+		log.Printf("Player %v won!", p.Owner)
+	}
+
 	return true
 }
 
 // SameLoc takes in an x and y position, and returns true if these match what is stored in
 // Piece, else returns false
-func (p *Piece) _move(newX, newY int) {
+func (p *_piece) _move(newX, newY int) {
 	oldX, oldY := p.X, p.Y
 	p.X, p.Y = newX, newY
 	Board.update(nil, oldX, oldY)
 	Board.update(p, newX, newY)
+	p._kingMe()
 }
 
-func (p Piece) SameLoc(x, y int) bool {
+func (p _piece) SameLoc(x, y int) bool {
 	return p.X == x && p.Y == y
 }
 
-// CurrentLoc returns the current x and y positions for Piece struct
-func (p Piece) CurrentLoc() (int, int) {
-	return p.X, p.Y
+// kingMe checks conditions for king status and sets king marker to true if those conditions are met
+func (p *_piece) _kingMe() {
+	if p.IsKing == 0 && (p.Y == 0 || p.Y == 8) {
+		p.IsKing = 1
+	}
 }
 
 // Moves sets the x and y positions for Piece struct
-func (p *Piece) Move(newX, newY int) error {
+func (p *_piece) Move(newX, newY int) error {
 	err := errors.New("invalid move")
 	if !Board.emptySpace(newX, newY) || // piece must move onto empty space
 		p.IsKing == 0 && newY*p.direction < p.Y*p.direction || // only kings can move in reverse
